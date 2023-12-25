@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Member Join Page</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Join Page
+                </div>
+                <div class="card-body">
+                    <p>
+                        Input your email address in the below.<br>
+                        To check the validity of your email address,<br>
+                        a password will be sent to it.
+                    </p>
+                    <form action="/member/join" method="post">
+                        <table>
+                            <tr>
+                                <td><span class="input-group-text">Email Address</span></td>
+                                <td><input type="email" id="email" name="email" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" class="btn btn-primary submitBtn" value="Submit" onClick="return check()">
+                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div id="msg"></div>
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const mainMsg = [[${msg}]]
+
+    if(mainMsg){
+        alert(mainMsg);
+    }
+
+    const email = document.getElementById("email");
+    const msg = document.getElementById("msg");
+
+    function emailCheck(email_address){
+        email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+        if(!email_regex.test(email_address)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    const check = function() {
+        if(!emailCheck(email.value)){
+            msg.textContent = "The given email address is not a correct one";
+            email.focus();
+            return false;
+        }
+    }
+
+    const clear = function() {
+        msg.textContent = "";
+    }
+
+    email.onkeydown = clear;
+
+</script>

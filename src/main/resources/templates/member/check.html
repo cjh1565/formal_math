@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Email Address Check</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Checking Email Address
+                </div>
+                <div class="card-body">
+                    <p>
+                        Input the password you received,<br>
+                        and press the check button.
+                    </p>
+                    <form action="/member/check" method="post">
+                        <input type="hidden" name="email" th:value="${email}">
+                        <input type="hidden" name="epw" th:value="${epw}">
+                        <table>
+                            <tr>
+                                <td><span class="input-group-text">Password</span></td>
+                                <td><input type="text" id="password" name="password" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" class="btn btn-primary submitBtn" value="Check" onClick="return check()">
+                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div id="msg"></div>
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const mainMsg = [[${msg}]]
+
+    const password = document.getElementById("password");
+    const msg = document.getElementById("msg");
+
+    if(mainMsg){
+        msg.innerHTML = mainMsg;
+    }
+
+    const check = function() {
+        if(password.value === "") {
+            msg.innerHTML = "Input the password you received!";
+            password.focus();
+            return false;
+        }
+    }
+
+    const clear = function() {
+        msg.textContent = "";
+    }
+
+    password.onkeydown = clear;
+</script>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Member Login Page</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Login Page
+                </div>
+                <div class="card-body">
+                    <form action="/member/login" method="post">
+                        <table>
+                            <tr>
+                                <td><span class="input-group-text">Email Address</span></td>
+                                <td><input type="text" id="email" name="username" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="input-group-text">Password</span></td>
+                                <td><input type="password" id="password" name="password" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" name="remember-me">
+                                    <label class="form-check-label">
+                                        Auto Login
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" class="btn btn-primary submitBtn" value="Login" onClick="return check()">
+                                    <a href="/member/join" class="btn btn-secondary">Join</a>
+                                </td>
+                                <td>
+                                    <a href="/member/password" class="btn btn-warning">Forgot Password?</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div id="msg"><br></div>
+                    <br>
+                    <a href="/oauth2/authorization/google" class="btn btn-info">GOOGLE</a>
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const mainMsg = [[${msg}]]
+
+    if(mainMsg){
+        alert(mainMsg);
+    }
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const msg = document.getElementById("msg");
+
+    function emailCheck(email_address){
+        email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+        if(!email_regex.test(email_address)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    const check = function() {
+        if(!emailCheck(email.value)){
+            msg.innerHTML = "The given email address is not a correct one!";
+            email.focus();
+            return false;
+        }
+        if(password.value === ""){
+            msg.innerHTML = "A password should be given!";
+            password.focus();
+            return false;
+        }
+    }
+
+    const clear = function() {
+        msg.innerHTML = "<br>";
+    }
+
+    email.onkeydown = clear;
+    password.onkeydown = clear;
+</script>
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Info</title>
+</head>
+<body>
+    <h1 sec:authentication="principal.name"></h1>
+    <div sec:authorize="hasRole('USER')">has USER role</div>
+    <div sec:authorize="hasRole('MANAGER')">has MANAGER role</div>
+    <div sec:authorize="hasRole('ADMIN')">has ADMIN role</div>
+    <div sec:authorize="isAuthenticated()">
+        Only Authenticated user can see this Text
+    </div>
+    Authenticated username:
+    <div sec:authentication="name"></div>
+    Authenticated user roles:
+    <div sec:authentication="principal.authorities"></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Modifying User Info</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Modifying User Information
+                </div>
+                <div class="card-body">
+                    <form action="/member/modify" method="post">
+                        <table>
+                            <tr>
+                                <td><span class="input-group-text">Email Address</span></td>
+                                <td><input type="email" id="email" name="email" class="form-control" th:value="${email}" readonly></td>
+                            </tr>
+                            <tr>
+                                <td><span class="input-group-text">Password</span></td>
+                                <td><input type="password" id="pw1" name="password" class="form-control" th:value="${password}"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="input-group-text">Password again</span></td>
+                                <td><input type="password" id="pw2" class="form-control" th:value="${password}"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="input-group-text">Nickname</span></td>
+                                <td><input type="text" id="name" name="name" class="form-control" th:value="${name}" ></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" class="btn btn-primary submitBtn" value="Modify" onClick="return check()">
+                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning" th:href="@{/member/withdraw?email={val}(val=${#authentication.principal.username})}" onClick="return withdraw()">Withdraw</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div id="msg"></div>
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const mainMsg = [[${msg}]]
+
+    const pw1 = document.getElementById("pw1");
+    const pw2 = document.getElementById("pw2");
+    const name = document.getElementById("name");
+    const msg = document.getElementById("msg");
+
+    if(mainMsg){
+        msg.innerHTML = mainMsg;
+    }
+
+    const check = function() {
+        if(pw1.value.length < 4) {
+            msg.textContent = "The password should be logger(>3)!";
+            pw1.focus();
+            return false;
+        }
+        if(pw1.value !== pw2.value) {
+            msg.textContent = "The passwords are not coincide!";
+            pw2.focus();
+            return false;
+        }
+        if(name.value === "") {
+            msg.innerHTML = "A nickname should be given!";
+            name.focus();
+            return false;
+        }
+        if(!confirm("Do you really want to modify?\nAfter modification you should log in again."))
+            return false;
+    }
+
+    const withdraw = function() {
+        if(!confirm("Do you really want to withdraw?\nYou can't use the service anymore."))
+            return false;
+    }
+
+    const clear = function() {
+        msg.textContent = "";
+    }
+
+    pw1.onkeydown = clear;
+    pw2.onkeydown = clear;
+    name.onkeydown = clear;
+</script>
