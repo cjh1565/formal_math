@@ -1,5 +1,6 @@
 package com.formal.math.repository;
 
+import com.formal.math.dto.PostWithRCDTO;
 import com.formal.math.entity.Member;
 import com.formal.math.entity.Post;
 import com.formal.math.entity.Type;
@@ -11,10 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -39,24 +38,25 @@ public class PostRepositoryTests {
         });
     }
     @Test
-    public void testGePostWithReply(){
-        List<Object[]> result = postRepository.getPostWithReply(100L);
-        for(Object[] arr : result) {
-            System.out.println(Arrays.toString(arr));
-        }
-    }
-    @Test
-    public void testWithReplyCount(){
-        Pageable pageable = PageRequest.of(0,10, Sort.by("pno").descending());
-        Page<Object[]> result = postRepository.getPostWithReplyCount(pageable);
-        result.get().forEach(row -> {
-            System.out.println(Arrays.toString(row));
-        });
-    }
-    @Test
     public void testRead3() {
-        Object result = postRepository.getPostByPno(100L);
+        Object result = postRepository.getPostByPno(98L);
         Object[] arr = (Object[]) result;
         System.out.println(Arrays.toString(arr));
+    }
+    @Test
+    public void testSearchReplyCount() {
+        String[] types = {"t", "c", "w"};
+        String keyword = "1";
+        Pageable pageable = PageRequest.of(0,10, Sort.by("pno").descending());
+        Page<PostWithRCDTO> result = postRepository.searchWithRC(types, keyword, pageable);
+        //total pages
+        log.info(result.getTotalPages());
+        //pag size
+        log.info(result.getSize());
+        //pageNumber
+        log.info(result.getNumber());
+        //prev next
+        log.info(result.hasPrevious() +": " + result.hasNext());
+        result.getContent().forEach(post -> log.info(post));
     }
 }

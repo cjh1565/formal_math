@@ -1,36 +1,7 @@
-async function get1(bno) {
-
-    const result = await axios.get(`/replies/list/${bno}`)
-
-    //console.log(result)
-
-    return result;
-}
-
-
-// async function getList({bno, page, size, goLast}){
-//
-//     const result = await axios.get(`/replies/list/${bno}`, {params: {page, size}})
-//
-//     return result.data
-// }
-
-
-async function getList({bno, page, size, goLast}){
-
-    const result = await axios.get(`/replies/list/${bno}`, {params: {page, size}})
-
-    if(goLast){
-        const total = result.data.total
-        const lastPage = parseInt(Math.ceil(total/size))
-
-        return getList({bno:bno, page:lastPage, size:size})
-
-    }
-
+async function getList({pno, page, size}){
+    const result = await axios.get(`/replies/list/${pno}`, {params: {page, size}})
     return result.data
 }
-
 
 async function addReply(replyObj) {
     const response = await axios.post(`/replies/`,replyObj)
@@ -43,7 +14,6 @@ async function getReply(rno) {
 }
 
 async function modifyReply(replyObj) {
-
     const response = await axios.put(`/replies/${replyObj.rno}`, replyObj)
     return response.data
 }

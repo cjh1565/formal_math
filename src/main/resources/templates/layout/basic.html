@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -17,10 +18,10 @@
 <div class="d-flex" id="wrapper">
     <!-- Sidebar-->
     <div class="border-end bg-white" id="sidebar-wrapper">
-        <div class="sidebar-heading border-bottom bg-light">Formal Math</div>
+        <div class="sidebar-heading border-bottom bg-light"><a href="/" style="text-decoration:none">Formal Math</a></div>
         <div class="list-group list-group-flush">
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/post/list">Post List</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Shortcuts</a>
+            <a sec:authorize="isAuthenticated()" class="list-group-item list-group-item-action list-group-item-light p-3" href="/theory/edit">Edit Theory</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
@@ -43,6 +44,9 @@
                         <li class="nav-item">
                             <a sec:authorize="!isAuthenticated()" class="nav-link" th:href="@{/member/login}">Login</a>
                             <a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a sec:authorize="!isAuthenticated()" class="nav-link" th:href="@{/member/join}">Join</a>
                         </li>
                         <li sec:authorize="isAuthenticated()" class="nav-item">
                             <a class="nav-link" th:href="@{/member/modify}">Modify</a>

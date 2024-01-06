@@ -59,7 +59,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private Member saveSocialMember(String email) {
         Optional<Member> result = repository.findById(email);
 //        Optional<Member> result = repository.findByEmail(email, false);
-        if(result.isPresent()) {
+        if(result.isPresent() && !result.get().isDel()) {
             return result.get();
         }
         Long cnt = repository.count()+1;

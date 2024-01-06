@@ -10,7 +10,7 @@ public interface MemberService {
   void setInfo(String email, String password, String name) throws NameExistsException;
   String getName(String email);
   void modify(String email, String password, String name) throws NameExistsException;
-  void withdraw(String email);
+  void withdraw(String name);
 //  default Member dtoToEntity(MemberDTO dto) {
 //    return Member.builder()
 //      .email(dto.getEmail())

@@ -40,7 +40,7 @@
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                 </td>
                                 <td>
-                                    <a class="btn btn-warning" th:href="@{/member/withdraw?email={val}(val=${#authentication.principal.username})}" onClick="return withdraw()">Withdraw</a>
+                                    <a class="btn btn-warning" th:href="@{/member/withdraw?name={val}(val=${name})}" onClick="return withdraw()">Withdraw</a>
                                 </td>
                             </tr>
                         </table>

@@ -21,11 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MemberController {
     private final MemberService memberService;
     @GetMapping("/login")
-    public void loginGET() {
+    public void login() {
         log.info("login get...............");
     }
     @GetMapping("/prelogin")
-    public String preloginGET(String msg, RedirectAttributes redirectAttributes) {
+    public String prelogin(String msg, RedirectAttributes redirectAttributes) {
         log.info("prelogin get...............");
         redirectAttributes.addFlashAttribute("msg", msg);
         return "redirect:/member/login";
@@ -36,11 +36,11 @@ public class MemberController {
         log.info("info...............");
     }
     @GetMapping("/join")
-    public void joinGET() {
+    public void join() {
         log.info("join get...");
     }
     @PostMapping("/join")
-    public String joinPOST(String email, Model model, RedirectAttributes redirectAttributes) {
+    public String joinPost(String email, Model model, RedirectAttributes redirectAttributes) {
       log.info("join post...");
       String encodedPassword;
       try {
@@ -54,11 +54,11 @@ public class MemberController {
       return "/member/check";
     }
 //    @GetMapping("/check")
-//    public void checkGET() {
+//    public void check() {
 //        log.info("check get...............");
 //    }
     @PostMapping("/check")
-    public String checkEmailPOST(String email, String epw, String password, Model model) {
+    public String checkEmailPost(String email, String epw, String password, Model model) {
         log.info("check post...............");
         if(memberService.checkPassword(password, epw)){
             model.addAttribute("email", email);
@@ -71,11 +71,11 @@ public class MemberController {
         }
     }
 //    @GetMapping("/setInfo")
-//    public void setInfoGET() {
+//    public void setInfo() {
 //        log.info("setInfo get...............");
 //    }
     @PostMapping("/setInfo")
-    public String setInfoPOST(String email, String password, String name, Model model, RedirectAttributes redirectAttributes) {
+    public String setInfoPost(String email, String password, String name, Model model, RedirectAttributes redirectAttributes) {
         log.info("modify post...............");
         try {
             memberService.setInfo(email, password, name);
@@ -90,11 +90,11 @@ public class MemberController {
         return "redirect:/member/login";
     }
     @GetMapping("/password")
-    public void passwordGET() {
+    public void password() {
         log.info("password get...............");
     }
     @PostMapping("/password")
-    public String passwordPOST(String email, RedirectAttributes redirectAttributes) {
+    public String passwordPost(String email, RedirectAttributes redirectAttributes) {
         log.info("password post...............");
         log.info(email);
         try {
@@ -108,16 +108,15 @@ public class MemberController {
     }
     @PreAuthorize("hasAnyRole('USER','MANAGER','ADMIN')")
     @GetMapping("/modify")
-    public void modifyGET(Authentication authentication, Model model) {
+    public void modify(Authentication authentication, Model model) {
         log.info("modify get...............");
         String email = ((UserDetails) authentication.getPrincipal()).getUsername();
         String name = memberService.getName(email);
         model.addAttribute("email", email);
         model.addAttribute("name", name);
     }
-    @PreAuthorize("hasAnyRole('USER','MANAGER','ADMIN')")
     @PostMapping("/modify")
-    public String modifyPOST(String email, String password, String name, Model model) {
+    public String modifyPost(String email, String password, String name, Model model) {
         log.info("modify post...............");
         try {
             memberService.modify(email, password, name);
@@ -131,9 +130,9 @@ public class MemberController {
         return "redirect:/logout";
     }
     @GetMapping("/withdraw")
-    public String withdrawGET(@RequestParam String email) {
+    public String withdraw(@RequestParam String name) {
         log.info("withdraw get...............");
-        memberService.withdraw(email);
+        memberService.withdraw(name);
         return "redirect:/logout";
     }
 }

@@ -1,6 +1,7 @@
 package com.formal.math.dto;
 
-import com.formal.math.entity.Type;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,14 +15,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostDTO {
   private Long pno;
-  private Type type;
+  private String type;
+  @NotEmpty
+  @Size(min=3, max=100)
   private String title;
+  @NotEmpty
   private String content;
   private Long theory;
   private Long category;
-  private String writerEmail;
   private String writerName;
   private LocalDateTime regDate;
   private LocalDateTime modDate;
-  private int replyCount;
 }

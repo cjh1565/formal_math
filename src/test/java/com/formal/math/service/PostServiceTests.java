@@ -1,9 +1,9 @@
-package com.formal.math.repository;
+package com.formal.math.service;
 
 import com.formal.math.dto.PageRequestDTO;
-import com.formal.math.dto.PageResultDTO;
+import com.formal.math.dto.PageResponseDTO;
 import com.formal.math.dto.PostDTO;
-import com.formal.math.entity.Type;
+import com.formal.math.dto.PostWithRCDTO;
 import com.formal.math.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +16,19 @@ public class PostServiceTests {
   @Test
   public void testRegister() {
     PostDTO dto = PostDTO.builder()
-      .type(Type.GENERAL)
+      .type("GENERAL")
       .title("Test.")
       .content("Test..")
-      .writerEmail("member55@aaa.com")
+      .writerName("member55")
       .build();
     Long pno = postService.register(dto);
   }
   @Test
   public void testList() {
     PageRequestDTO pageRequestDTO = new PageRequestDTO();
-    PageResultDTO<PostDTO, Object[]> result = postService.getList(pageRequestDTO);
-    for(PostDTO postDTO : result.getDtoList()) {
-      System.out.println(postDTO);
+    PageResponseDTO<PostWithRCDTO> result = postService.listWithRC(pageRequestDTO);
+    for(PostWithRCDTO postWithRCDTO : result.getDtoList()) {
+      System.out.println(postWithRCDTO);
     }
   }
   @Test

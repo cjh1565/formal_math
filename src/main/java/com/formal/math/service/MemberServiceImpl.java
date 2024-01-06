@@ -68,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
     memberRepository.save(member);
   }
   public String getName(String email) {
-    Member member = memberRepository.findById(email).orElse(null);
+    Member member = memberRepository.findById(email).orElseThrow();
     return member.getName();
   }
   @Override
@@ -80,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
     if(result.isPresent() && !result.get().getEmail().equals(email)) {
       throw new NameExistsException();
     }
-    Member member = memberRepository.findById(email).orElse(null);
+    Member member = memberRepository.findById(email).orElseThrow();
     member.changePassword(passwordEncoder.encode(password));
     member.changeName(name);
 //    log.info("======================");
@@ -88,8 +88,8 @@ public class MemberServiceImpl implements MemberService {
 //    log.info(member.getRoleSet());
     memberRepository.save(member);
   }
-  public void withdraw(String email) {
-    Member member = memberRepository.findById(email).orElse(null);
+  public void withdraw(String name) {
+    Member member = memberRepository.findByName(name).orElseThrow();
     member.changeDel(true);
     member.clearRoles();
     memberRepository.save(member);
